@@ -93,5 +93,140 @@ namespace RedElectricaMunicipal
 
             return true;
         }
+
+        private NodoTrie BuscarNodo(string clave)
+        {
+            NodoTrie actual = raiz;
+
+            for (int i = 0; i < clave.Length; i++)
+            {
+                if (clave[i] >= 256)
+                {
+                    return null;
+                }
+
+                actual = actual.Hijos[clave[i]];
+
+                if (actual == null)
+                {
+                    return null;
+                }
+            }
+
+            return actual;
+        }
+
+        private bool TieneHijos(NodoTrie nodo)
+        {
+            for (int i = 0; i < 256; i++)
+            {
+                if (nodo.Hijos[i] != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool Eliminar(string nombre)
+        {
+            string clave = Normalizar(nombre);
+
+            if (clave == "")
+            {
+                return false;
+            }
+
+            NodoTrie nodo = BuscarNodo(clave);
+
+            if (nodo == null || !nodo.EsFinal)
+            {
+                return false;
+            }
+
+            nodo.EsFinal = false;
+            nodo.Nombre = "";
+            nodo.Codigo = "";
+            cantidad--;
+
+            LimpiarRama(raiz, clave, 0);
+
+            return true;
+        }
+
+        private bool LimpiarRama(NodoTrie nodo, string clave, int nivel)
+        {
+            if (nivel == clave.Length)
+            {
+                return !nodo.EsFinal && !TieneHijos(nodo);
+            }
+
+            int indice = clave[nivel];
+            NodoTrie hijo = nodo.Hijos[indice];
+
+            if (hijo == null)
+            {
+                return false;
+            }
+
+            if (LimpiarRama(hijo, clave, nivel + 1))
+            {
+                nodo.Hijos[indice] = null;
+            }
+
+            return !nodo.EsFinal && !TieneHijos(nodo);
+        }
+
+        public int BuscarPorPrefijo(string prefijo)
+        {
+            string clave = Normalizar(prefijo);
+
+            if (clave == "")
+            {
+                Console.WriteLine("Escribe al menos una letra para buscar.");
+                return 0;
+            }
+
+            NodoTrie nodo = BuscarNodo(clave);
+
+            Console.WriteLine("\nResultados para \"" + prefijo.Trim() + "\":");
+
+            if (nodo == null)
+            {
+                Console.WriteLine("No hay subestaciones con ese prefijo.");
+                return 0;
+            }
+
+            int encontrados = MostrarDesde(nodo);
+
+            if (encontrados == 0)
+            {
+                Console.WriteLine("No hay subestaciones con ese prefijo.");
+            }
+
+            return encontrados;
+        }
+
+        private int MostrarDesde(NodoTrie nodo)
+        {
+            int total = 0;
+
+            if (nodo.EsFinal)
+            {
+                Console.WriteLine(nodo.Nombre + " (" + nodo.Codigo + ")");
+                total++;
+            }
+
+            for (int i = 0; i < 256; i++)
+            {
+                if (nodo.Hijos[i] != null)
+                {
+                    total = total + MostrarDesde(nodo.Hijos[i]);
+                }
+            }
+
+            return total;
+        }
     }
 }
