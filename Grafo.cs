@@ -3,11 +3,13 @@ using System.Collections.Generic; // Permitido únicamente para Queue<int> en el
 
 namespace RedElectricaMunicipal
 {
-    //ESTRUCTURA: Grafo Dirigido y Ponderado (Lista de Adyacencia Manual)
-    //RESPONSABLE: Ferry de Jesús López del Cid
-    //JUSTIFICACIÓN TÉCNICA: Modela las subestaciones y líneas de distribución
-    //mediante arreglos y listas enlazadas propias, permitiendo recorridos
-    //BFS y DFS
+    // =========================================================================
+    // ESTRUCTURA: Grafo Dirigido y Ponderado (Lista de Adyacencia Manual)
+    // AUTOR / RESPONSABLE: Ferry de Jesús López del Cid
+    // JUSTIFICACIÓN TÉCNICA: Modela las subestaciones y líneas de distribución
+    // mediante arreglos y listas enlazadas propias, permitiendo recorridos
+    // BFS/DFS en O(V + E) y cálculo de ruta óptima con Dijkstra en O(V^2).
+    // =========================================================================
 
     public class NodoArista
     {
@@ -221,7 +223,103 @@ namespace RedElectricaMunicipal
             }
         }
 
-        // 6. Imprimir Topología de la Red
+        // 6. Algoritmo de Dijkstra (Ruta de Menor Costo de Mantenimiento) - O(V^2)
+        public void DijkstraRutaMenorCosto(int idOrigen, int idDestino)
+        {
+            if (idOrigen < 0 || idOrigen >= totalSubestaciones || idDestino < 0 || idDestino >= totalSubestaciones)
+            {
+                Console.WriteLine("Subestaciones inválidas para el cálculo de ruta.");
+                return;
+            }
+
+            double[] costoMinimo = new double[totalSubestaciones];
+            double[] longitudAcumulada = new double[totalSubestaciones];
+            int[] previo = new int[totalSubestaciones];
+            bool[] visitado = new bool[totalSubestaciones];
+
+            for (int i = 0; i < totalSubestaciones; i++)
+            {
+                costoMinimo[i] = double.MaxValue;
+                longitudAcumulada[i] = 0;
+                previo[i] = -1;
+                visitado[i] = false;
+            }
+
+            costoMinimo[idOrigen] = 0;
+
+            for (int count = 0; count < totalSubestaciones - 1; count++)
+            {
+                int u = -1;
+                double min = double.MaxValue;
+
+                for (int v = 0; v < totalSubestaciones; v++)
+                {
+                    if (!visitado[v] && costoMinimo[v] < min)
+                    {
+                        min = costoMinimo[v];
+                        u = v;
+                    }
+                }
+
+                if (u == -1 || u == idDestino)
+                    break;
+
+                visitado[u] = true;
+
+                NodoArista arista = listaAdyacencia[u];
+                while (arista != null)
+                {
+                    int v = arista.IdDestino;
+                    double pesoCosto = arista.CostoMantenimiento;
+
+                    if (!visitado[v] && costoMinimo[u] != double.MaxValue &&
+                        costoMinimo[u] + pesoCosto < costoMinimo[v])
+                    {
+                        costoMinimo[v] = costoMinimo[u] + pesoCosto;
+                        longitudAcumulada[v] = longitudAcumulada[u] + arista.LongitudKm;
+                        previo[v] = u;
+                    }
+                    arista = arista.Siguiente;
+                }
+            }
+
+            Console.WriteLine("\n=== RUTA ÓPTIMA DE RESTABLECIMIENTO (DIJKSTRA) ===");
+            if (costoMinimo[idDestino] == double.MaxValue)
+            {
+                Console.WriteLine("No existe una ruta dirigida disponible desde [" +
+                                  vertices[idOrigen].Codigo + "] hacia [" + vertices[idDestino].Codigo + "].");
+                return;
+            }
+
+            int[] camino = new int[totalSubestaciones];
+            int tope = 0;
+            int rastreo = idDestino;
+
+            while (rastreo != -1)
+            {
+                camino[tope] = rastreo;
+                tope++;
+                rastreo = previo[rastreo];
+            }
+
+            Console.WriteLine("Origen:  [" + vertices[idOrigen].Codigo + "] " + vertices[idOrigen].Nombre);
+            Console.WriteLine("Destino: [" + vertices[idDestino].Codigo + "] " + vertices[idDestino].Nombre);
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("Secuencia de subestaciones a energizar:");
+
+            for (int i = tope - 1; i >= 0; i--)
+            {
+                int idPaso = camino[i];
+                string flecha = (i > 0) ? "  ===>  " : " (SUMINISTRO RESTABLECIDO)";
+                Console.WriteLine("  Paso " + (tope - i) + ": [" + vertices[idPaso].Codigo + "] " + vertices[idPaso].Nombre + flecha);
+            }
+
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("Costo Total de Mantenimiento: Q" + costoMinimo[idDestino].ToString("F2"));
+            Console.WriteLine("Longitud Física Total:        " + longitudAcumulada[idDestino].ToString("F2") + " km");
+        }
+
+        // 7. Imprimir Topología de la Red
         public void ImprimirGrafo()
         {
             Console.WriteLine("\n=== TOPOLOGÍA DE LA RED ELÉCTRICA (LISTA DE ADYACENCIA) ===");
