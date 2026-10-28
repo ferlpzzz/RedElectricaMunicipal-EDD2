@@ -47,7 +47,7 @@ namespace RedElectricaMunicipal
         }
 
         // Valida existencia y carga subestaciones desde archivo CSV
-        public static int CargarSubestaciones(string rutaArchivo, Grafo grafo, UnionFind unionFind)
+        public static int CargarSubestaciones(string rutaArchivo, Grafo grafo, UnionFind unionFind, TablaHash tablaHash, Trie trie)
         {
             string rutaCompleta = Path.GetFullPath(rutaArchivo);
 
@@ -78,9 +78,8 @@ namespace RedElectricaMunicipal
                         if (idAsignado != -1)
                         {
                             unionFind.RegistrarElemento(idAsignado);
-                            // NOTA PARA TOÑO: Aquí puedes enlazar directamente:
-                            // tablaHash.Insertar(grafo.Vertices[idAsignado]);
-                            // trie.Insertar(nombre, codigo);
+                            tablaHash.Insertar(codigo);
+                            trie.Insertar(nombre, codigo);
                             cargadas++;
                         }
                     }
