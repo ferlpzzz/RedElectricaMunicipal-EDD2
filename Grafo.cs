@@ -1,13 +1,13 @@
 using System;
+using System.Collections.Generic; // Permitido únicamente para Queue<int> en el recorrido BFS
 
 namespace RedElectricaMunicipal
 {
-    // =========================================================================
-    // ESTRUCTURA: Grafo Dirigido y Ponderado (Lista de Adyacencia Manual)
-    // AUTOR / RESPONSABLE: Ferry de Jesús López del Cid
-    // JUSTIFICACIÓN TÉCNICA: Modela las subestaciones y líneas de distribución
-    // mediante arreglos y listas enlazadas propias sin colecciones nativas.
-    // =========================================================================
+    //ESTRUCTURA: Grafo Dirigido y Ponderado (Lista de Adyacencia Manual)
+    //RESPONSABLE: Ferry de Jesús López del Cid
+    //JUSTIFICACIÓN TÉCNICA: Modela las subestaciones y líneas de distribución
+    //mediante arreglos y listas enlazadas propias, permitiendo recorridos
+    //BFS y DFS
 
     public class NodoArista
     {
@@ -150,7 +150,78 @@ namespace RedElectricaMunicipal
             return false;
         }
 
-        // 4. Imprimir Topología de la Red
+        // 4. Recorrido en Anchura (BFS) - O(V + E)
+        public void RecorridoBFS(int idInicio)
+        {
+            if (idInicio < 0 || idInicio >= totalSubestaciones || vertices[idInicio] == null)
+            {
+                Console.WriteLine("Subestación de inicio inválida.");
+                return;
+            }
+
+            bool[] visitado = new bool[totalSubestaciones];
+            Queue<int> cola = new Queue<int>();
+
+            visitado[idInicio] = true;
+            cola.Enqueue(idInicio);
+
+            Console.WriteLine("\n=== RECORRIDO EN ANCHURA (BFS) DESDE [" + vertices[idInicio].Codigo + "] ===");
+            int paso = 1;
+
+            while (cola.Count > 0)
+            {
+                int actual = cola.Dequeue();
+                Console.WriteLine(paso + ". [" + vertices[actual].Codigo + "] " + vertices[actual].Nombre + " (" + vertices[actual].Capacidad + " MW)");
+                paso++;
+
+                NodoArista arista = listaAdyacencia[actual];
+                while (arista != null)
+                {
+                    int vecino = arista.IdDestino;
+                    if (!visitado[vecino])
+                    {
+                        visitado[vecino] = true;
+                        cola.Enqueue(vecino);
+                    }
+                    arista = arista.Siguiente;
+                }
+            }
+        }
+
+        // 5. Recorrido en Profundidad (DFS) - O(V + E)
+        public void RecorridoDFS(int idInicio)
+        {
+            if (idInicio < 0 || idInicio >= totalSubestaciones || vertices[idInicio] == null)
+            {
+                Console.WriteLine("Subestación de inicio inválida.");
+                return;
+            }
+
+            bool[] visitado = new bool[totalSubestaciones];
+            Console.WriteLine("\n=== RECORRIDO EN PROFUNDIDAD (DFS) DESDE [" + vertices[idInicio].Codigo + "] ===");
+            int contador = 1;
+            DFSRecursivo(idInicio, visitado, ref contador);
+        }
+
+        private void DFSRecursivo(int actual, bool[] visitado, ref int contador)
+        {
+            visitado[actual] = true;
+            Console.WriteLine(contador + ". [" + vertices[actual].Codigo + "] " + vertices[actual].Nombre + " (" + vertices[actual].Capacidad + " MW)");
+            contador++;
+
+            NodoArista arista = listaAdyacencia[actual];
+            while (arista != null)
+            {
+                int vecino = arista.IdDestino;
+                if (!visitado[vecino])
+                {
+                    DFSRecursivo(vecino, visitado, ref contador);
+                }
+                arista = arista.Siguiente;
+            }
+        }
+
+        // 6. Imprimir Topología de la Red
         public void ImprimirGrafo()
         {
             Console.WriteLine("\n=== TOPOLOGÍA DE LA RED ELÉCTRICA (LISTA DE ADYACENCIA) ===");
