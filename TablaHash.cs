@@ -2,15 +2,24 @@
 
 namespace RedElectricaMunicipal
 {
+    // =========================================================================
+    //ESTRUCTURA: Tabla Hash con Encadenamiento Separado (Listas Enlazadas)
+    //AUTOR / RESPONSABLE: José Sulecio
+    //JUSTIFICACIÓN TÉCNICA: Permite localizar el registro completo de una
+    //subestación a partir de su código único en tiempo constante promedio O(1),
+    //resolviendo colisiones mediante nodos enlazados propios.
+    // =========================================================================
 
     public class NodoHash
     {
         public string Codigo;
+        public Subestacion Registro; // Referencia directa al registro completo
         public NodoHash Siguiente;
 
-        public NodoHash(string codigo)
+        public NodoHash(string codigo, Subestacion registro = null)
         {
             Codigo = codigo;
+            Registro = registro;
             Siguiente = null;
         }
     }
@@ -60,7 +69,7 @@ namespace RedElectricaMunicipal
             return codigo.Trim().ToUpper();
         }
 
-        public bool Insertar(string codigo)
+        public bool Insertar(string codigo, Subestacion registro = null)
         {
             codigo = Normalizar(codigo);
 
@@ -76,7 +85,7 @@ namespace RedElectricaMunicipal
 
             int posicion = Hash(codigo);
 
-            NodoHash nuevo = new NodoHash(codigo);
+            NodoHash nuevo = new NodoHash(codigo, registro);
             nuevo.Siguiente = tabla[posicion];
             tabla[posicion] = nuevo;
             cantidad++;
@@ -86,11 +95,16 @@ namespace RedElectricaMunicipal
 
         public bool Buscar(string codigo)
         {
+            return ObtenerSubestacion(codigo) != null || BuscarNodo(codigo) != null;
+        }
+
+        private NodoHash BuscarNodo(string codigo)
+        {
             codigo = Normalizar(codigo);
 
             if (codigo == "")
             {
-                return false;
+                return null;
             }
 
             int posicion = Hash(codigo);
@@ -100,12 +114,23 @@ namespace RedElectricaMunicipal
             {
                 if (actual.Codigo == codigo)
                 {
-                    return true;
+                    return actual;
                 }
                 actual = actual.Siguiente;
             }
 
-            return false;
+            return null;
+        }
+
+        // Localiza y devuelve el registro completo de la subestación en O(1)
+        public Subestacion ObtenerSubestacion(string codigo)
+        {
+            NodoHash nodo = BuscarNodo(codigo);
+            if (nodo != null)
+            {
+                return nodo.Registro;
+            }
+            return null;
         }
 
         public bool Eliminar(string codigo)
@@ -147,7 +172,7 @@ namespace RedElectricaMunicipal
 
         public void Imprimir()
         {
-            Console.WriteLine("\nTABLA HASH DE SUBESTACIONES");
+            Console.WriteLine("\n=== TABLA HASH DE SUBESTACIONES ===");
 
             if (cantidad == 0)
             {
@@ -169,11 +194,18 @@ namespace RedElectricaMunicipal
                 {
                     while (actual != null)
                     {
-                        Console.Write(actual.Codigo);
+                        if (actual.Registro != null)
+                        {
+                            Console.Write("[" + actual.Codigo + ": " + actual.Registro.Nombre + "]");
+                        }
+                        else
+                        {
+                            Console.Write(actual.Codigo);
+                        }
 
                         if (actual.Siguiente != null)
                         {
-                            Console.Write(", ");
+                            Console.Write(" -> ");
                         }
 
                         actual = actual.Siguiente;
@@ -182,7 +214,7 @@ namespace RedElectricaMunicipal
                 }
             }
 
-            Console.WriteLine("Total de codigos: " + cantidad);
+            Console.WriteLine("Total de subestaciones indexadas: " + cantidad);
         }
     }
 }

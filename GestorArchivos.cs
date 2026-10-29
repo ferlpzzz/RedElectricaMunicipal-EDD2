@@ -5,10 +5,10 @@ using System.Globalization;
 namespace RedElectricaMunicipal
 {
     // =========================================================================
-    // MÓDULO: Gestor de Archivos CSV
-    // AUTOR / RESPONSABLE: Ferry de Jesús López del Cid
-    // DESCRIPCIÓN: Gestiona la ubicación, existencia y carga dinámica de los
-    //              archivos subestaciones.csv y lineas.csv hacia las estructuras.
+    //MÓDULO: Gestor de Archivos CSV
+    //RESPONSABLE: Ferry de Jesús López del Cid
+    //DESCRIPCIÓN: Gestiona la ubicación, existencia y carga dinámica de los
+    //archivos subestaciones.csv y lineas.csv hacia las estructuras.
     // =========================================================================
     public static class GestorArchivos
     {
@@ -46,7 +46,7 @@ namespace RedElectricaMunicipal
             }
         }
 
-        // Valida existencia y carga subestaciones desde archivo CSV
+        // Valida existencia y carga subestaciones desde archivo CSV en las 4 estructuras
         public static int CargarSubestaciones(string rutaArchivo, Grafo grafo, UnionFind unionFind, TablaHash tablaHash, Trie trie)
         {
             string rutaCompleta = Path.GetFullPath(rutaArchivo);
@@ -78,7 +78,7 @@ namespace RedElectricaMunicipal
                         if (idAsignado != -1)
                         {
                             unionFind.RegistrarElemento(idAsignado);
-                            tablaHash.Insertar(codigo);
+                            tablaHash.Insertar(codigo, grafo.Vertices[idAsignado]);
                             trie.Insertar(nombre, codigo);
                             cargadas++;
                         }

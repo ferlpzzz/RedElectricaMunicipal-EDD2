@@ -3,14 +3,19 @@ using System.Globalization;
 
 namespace RedElectricaMunicipal
 {
-
+    // =========================================================================
+    //ARCHIVO: Program.cs
+    //AUTORES: José Antonio (Menú e Interfaz) y Ferry López (Flujo Integrado)
+    //DESCRIPCIÓN: Menú interactivo de consola con operaciones individuales y
+    //              el flujo coordinado de las 4 estructuras de datos.
+    // =========================================================================
     public class Program
     {
         const int MaximoSubestaciones = 100;
 
         static Grafo grafo = new Grafo(MaximoSubestaciones);
         static UnionFind unionFind = new UnionFind(MaximoSubestaciones);
-        static TablaHash tablaHash = new TablaHash(5);
+        static TablaHash tablaHash = new TablaHash(11);
         static Trie trie = new Trie();
 
         static void Main(string[] args)
@@ -72,6 +77,12 @@ namespace RedElectricaMunicipal
                     case 13:
                         EliminarDelTrie();
                         break;
+                    case 14:
+                        EjecutarFlujoIntegrado();
+                        break;
+                    case 15:
+                        CargarArchivosPersonalizados();
+                        break;
                     case 0:
                         Console.WriteLine("Saliendo del programa.");
                         break;
@@ -90,21 +101,24 @@ namespace RedElectricaMunicipal
 
         static void MostrarMenu()
         {
-            Console.WriteLine("\nRED ELECTRICA MUNICIPAL");
-            Console.WriteLine("1. Ver topologia de la red");
+            Console.WriteLine("\n================ RED ELECTRICA MUNICIPAL ================");
+            Console.WriteLine("1. Ver topologia de la red (Grafo)");
             Console.WriteLine("2. Recorrido en anchura (BFS)");
             Console.WriteLine("3. Recorrido en profundidad (DFS)");
-            Console.WriteLine("4. Ruta de menor costo (Dijkstra)");
-            Console.WriteLine("5. Ver zonas electricas (Union-Find)");
-            Console.WriteLine("6. Agregar subestacion");
-            Console.WriteLine("7. Agregar linea de distribucion");
+            Console.WriteLine("4. Ruta de menor costo por codigo directo (Dijkstra)");
+            Console.WriteLine("5. Ver zonas electricas conectadas (Union-Find)");
+            Console.WriteLine("6. Agregar subestacion manualmente");
+            Console.WriteLine("7. Agregar linea de distribucion manualmente");
             Console.WriteLine("8. Eliminar linea de distribucion");
-            Console.WriteLine("9. Buscar subestacion por codigo (tabla hash)");
-            Console.WriteLine("10. Autocompletar nombre de subestacion (trie)");
-            Console.WriteLine("11. Imprimir tabla hash");
-            Console.WriteLine("12. Eliminar codigo de la tabla hash");
-            Console.WriteLine("13. Eliminar nombre del trie");
+            Console.WriteLine("9. Buscar subestacion por codigo (Tabla Hash O(1))");
+            Console.WriteLine("10. Autocompletar nombre de subestacion (Trie)");
+            Console.WriteLine("11. Imprimir estructura de la Tabla Hash");
+            Console.WriteLine("12. Eliminar codigo de la Tabla Hash");
+            Console.WriteLine("13. Eliminar nombre del Trie");
+            Console.WriteLine("14. [FLUJO INTEGRADO] Asistente de restablecimiento (Trie -> Hash -> Union-Find -> Dijkstra)");
+            Console.WriteLine("15. Cargar nuevos archivos .csv desde ruta especifica");
             Console.WriteLine("0. Salir");
+            Console.WriteLine("=========================================================");
         }
 
         static string LeerTexto(string mensaje)
@@ -162,11 +176,18 @@ namespace RedElectricaMunicipal
             return respuesta == "s";
         }
 
+        //Usa la Tabla Hash en O(1) como método principal para obtener el IdInterno
         static int PedirId(string mensaje)
         {
             string codigo = LeerTexto(mensaje);
-            int id = grafo.BuscarIdPorCodigo(codigo);
+            Subestacion sub = tablaHash.ObtenerSubestacion(codigo);
 
+            if (sub != null)
+            {
+                return sub.IdInterno;
+            }
+
+            int id = grafo.BuscarIdPorCodigo(codigo);
             if (id == -1)
             {
                 Console.WriteLine("No existe una subestacion con el codigo " + codigo + ".");
@@ -215,7 +236,89 @@ namespace RedElectricaMunicipal
                 return;
             }
 
+            if (!unionFind.EstanEnMismaZona(idOrigen, idDestino))
+            {
+                Console.WriteLine("[Union-Find] Las subestaciones pertenecen a zonas electricas desconectadas. No hay ruta posible.");
+                return;
+            }
+
             grafo.DijkstraRutaMenorCosto(idOrigen, idDestino);
+        }
+
+        static void EjecutarFlujoIntegrado()
+        {
+            Console.WriteLine("\n=== FLUJO INTEGRADO DE RESTABLECIMIENTO ELECTRICO ===");
+
+            // PASO 1 y 2 PARA ORIGEN (Trie + Tabla Hash)
+            Console.WriteLine("\n--- 1. SELECCION DE SUBESTACION DE ORIGEN ---");
+            string prefijoOrigen = LeerTexto("[Paso 1 - Trie] Escribe el inicio del nombre de la subestacion de ORIGEN (ej. 'que', 'sal'): ");
+            int sugerenciasOrigen = trie.BuscarPorPrefijo(prefijoOrigen);
+
+            if (sugerenciasOrigen == 0)
+            {
+                return;
+            }
+
+            string codOrigen = LeerTexto("[Paso 2 - Tabla Hash] Ingresa el codigo exacto de ORIGEN de la lista anterior: ");
+            Subestacion subOrigen = tablaHash.ObtenerSubestacion(codOrigen);
+
+            if (subOrigen == null)
+            {
+                Console.WriteLine("[Tabla Hash] El codigo ingresado no se encontro en la Tabla Hash.");
+                return;
+            }
+            Console.WriteLine("[Tabla Hash O(1)] Registro localizado: " + subOrigen.ToString());
+
+            // PASO 1 y 2 PARA DESTINO (Trie + Tabla Hash)
+            Console.WriteLine("\n--- 2. SELECCION DE SUBESTACION DE DESTINO ---");
+            string prefijoDestino = LeerTexto("[Paso 1 - Trie] Escribe el inicio del nombre de la subestacion de DESTINO (ej. 'la', 'san', 'can'): ");
+            int sugerenciasDestino = trie.BuscarPorPrefijo(prefijoDestino);
+
+            if (sugerenciasDestino == 0)
+            {
+                return;
+            }
+
+            string codDestino = LeerTexto("[Paso 2 - Tabla Hash] Ingresa el codigo exacto de DESTINO de la lista anterior: ");
+            Subestacion subDestino = tablaHash.ObtenerSubestacion(codDestino);
+
+            if (subDestino == null)
+            {
+                Console.WriteLine("[Tabla Hash] El codigo ingresado no se encontro en la Tabla Hash.");
+                return;
+            }
+            Console.WriteLine("[Tabla Hash O(1)] Registro localizado: " + subDestino.ToString());
+
+            // PASO 3: VALIDACIÓN DE ZONA ELÉCTRICA CON UNION-FIND
+            Console.WriteLine("\n--- 3. VERIFICACION DE CONECTIVIDAD (UNION-FIND) ---");
+            bool mismaZona = unionFind.EstanEnMismaZona(subOrigen.IdInterno, subDestino.IdInterno);
+
+            if (!mismaZona)
+            {
+                Console.WriteLine("[Union-Find] ALERTA: [" + subOrigen.Codigo + "] y [" + subDestino.Codigo + "] estan en zonas electricas aisladas.");
+                Console.WriteLine("No es posible restablecer el suministro sin antes construir una linea que una ambas zonas.");
+                return;
+            }
+
+            int idRaiz = unionFind.Find(subOrigen.IdInterno);
+            Console.WriteLine("[Union-Find O(α(n))] Conectividad confirmada. Ambas pertenecen a la zona principal liderada por [" + grafo.Vertices[idRaiz].Codigo + "].");
+
+            // PASO 4: CÁLCULO DE RUTA DE MENOR COSTO CON DIJKSTRA EN EL GRAFO
+            Console.WriteLine("\n--- 4. CALCULO DE RUTA DE MENOR COSTO (GRAFO - DIJKSTRA) ---");
+            grafo.DijkstraRutaMenorCosto(subOrigen.IdInterno, subDestino.IdInterno);
+        }
+
+        static void CargarArchivosPersonalizados()
+        {
+            Console.WriteLine("\n=== CARGA DINAMICA DE ARCHIVOS CSV ===");
+            string rutaSub = LeerTexto("Ruta del archivo de subestaciones (Enter para 'subestaciones.csv'): ");
+            if (rutaSub == "") rutaSub = "subestaciones.csv";
+
+            string rutaLin = LeerTexto("Ruta del archivo de lineas (Enter para 'lineas.csv'): ");
+            if (rutaLin == "") rutaLin = "lineas.csv";
+
+            GestorArchivos.CargarSubestaciones(rutaSub, grafo, unionFind, tablaHash, trie);
+            GestorArchivos.CargarLineas(rutaLin, grafo, unionFind);
         }
 
         static void AgregarSubestacion()
@@ -246,14 +349,14 @@ namespace RedElectricaMunicipal
             }
 
             unionFind.RegistrarElemento(id);
-            tablaHash.Insertar(codigo);
+            tablaHash.Insertar(codigo, grafo.Vertices[id]);
 
             if (!trie.Insertar(nombre, codigo))
             {
                 Console.WriteLine("Aviso: el nombre no se agrego al autocompletado (repetido o con caracteres no validos).");
             }
 
-            Console.WriteLine("Subestacion agregada: " + grafo.Vertices[id].ToString());
+            Console.WriteLine("Subestacion agregada en las 4 estructuras: " + grafo.Vertices[id].ToString());
         }
 
         static void AgregarLinea()
@@ -279,6 +382,11 @@ namespace RedElectricaMunicipal
             {
                 Console.WriteLine("La longitud debe ser mayor que cero y el costo no puede ser negativo.");
                 return;
+            }
+
+            if (unionFind.EstanEnMismaZona(idOrigen, idDestino))
+            {
+                Console.WriteLine("[Union-Find] Aviso: Ambas subestaciones ya pertenecen a la misma zona electrica conectada (se agregara como linea redundante).");
             }
 
             bool bidireccional = LeerSiNo("Es bidireccional? (s/n): ");
@@ -312,7 +420,6 @@ namespace RedElectricaMunicipal
 
             bool bidireccional = LeerSiNo("Quitar tambien la linea de regreso? (s/n): ");
 
-            // el Union-Find no puede separar zonas, asi que no se modifica aqui
             if (grafo.EliminarLinea(idOrigen, idDestino, bidireccional))
             {
                 Console.WriteLine("Linea eliminada.");
@@ -326,17 +433,12 @@ namespace RedElectricaMunicipal
         static void BuscarPorCodigo()
         {
             string codigo = LeerTexto("Codigo a buscar: ");
+            Subestacion sub = tablaHash.ObtenerSubestacion(codigo);
 
-            if (tablaHash.Buscar(codigo))
+            if (sub != null)
             {
-                Console.WriteLine("Codigo encontrado en la tabla hash.");
-
-                int id = grafo.BuscarIdPorCodigo(codigo);
-
-                if (id != -1)
-                {
-                    Console.WriteLine(grafo.Vertices[id].ToString());
-                }
+                Console.WriteLine("Registro localizado directamente en la Tabla Hash O(1):");
+                Console.WriteLine(sub.ToString());
             }
             else
             {
