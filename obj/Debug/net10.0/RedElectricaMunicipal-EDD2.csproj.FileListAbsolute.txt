@@ -1,0 +1,15 @@
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\bin\Debug\net10.0\RedElectricaMunicipal-EDD2.exe
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\bin\Debug\net10.0\RedElectricaMunicipal-EDD2.deps.json
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\bin\Debug\net10.0\RedElectricaMunicipal-EDD2.runtimeconfig.json
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\bin\Debug\net10.0\RedElectricaMunicipal-EDD2.dll
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\bin\Debug\net10.0\RedElectricaMunicipal-EDD2.pdb
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.AssemblyInfoInputs.cache
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.AssemblyInfo.cs
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.csproj.CoreCompileInputs.cache
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.sourcelink.json
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.dll
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\refint\RedElectricaMunicipal-EDD2.dll
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.pdb
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\RedElectricaMunicipal-EDD2.genruntimeconfig.cache
+C:\Users\lopez\OneDrive\Documents\4to Semestre Ingenieria Sistemas\C# EDD2\RedElectricaMunicipal\RedElectricaMunicipal-EDD2\obj\Debug\net10.0\ref\RedElectricaMunicipal-EDD2.dll

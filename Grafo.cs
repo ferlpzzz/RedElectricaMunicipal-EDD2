@@ -4,11 +4,11 @@ using System.Collections.Generic; // Permitido únicamente para Queue<int> en el
 namespace RedElectricaMunicipal
 {
     // =========================================================================
-    // ESTRUCTURA: Grafo Dirigido y Ponderado (Lista de Adyacencia Manual)
-    // AUTOR / RESPONSABLE: Ferry de Jesús López del Cid
-    // JUSTIFICACIÓN TÉCNICA: Modela las subestaciones y líneas de distribución
-    // mediante arreglos y listas enlazadas propias, permitiendo recorridos
-    // BFS/DFS en O(V + E) y cálculo de ruta óptima con Dijkstra en O(V^2).
+    //ESTRUCTURA: Grafo Dirigido y Ponderado (Lista de Adyacencia Manual)
+    //RESPONSABLE: Ferry de Jesús López del Cid
+    //JUSTIFICACIÓN TÉCNICA: Modela las subestaciones y líneas de distribución
+    //mediante arreglos y listas enlazadas propias, permitiendo recorridos
+    //BFS/DFS en O(V + E) y cálculo de ruta óptima con Dijkstra en O(V^2).
     // =========================================================================
 
     public class NodoArista

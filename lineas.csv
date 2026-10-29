@@ -1,0 +1,8 @@
+CodigoOrigen,CodigoDestino,LongitudKm,Costo,Bidireccional
+SUB-01,SUB-02,8.5,1200,true
+SUB-01,SUB-03,12.0,1800,true
+SUB-02,SUB-03,5.0,450,true
+SUB-01,SUB-04,15.0,2100,true
+SUB-04,SUB-06,10.5,950,false
+SUB-03,SUB-05,9.0,800,true
+SUB-06,SUB-07,7.5,700,true

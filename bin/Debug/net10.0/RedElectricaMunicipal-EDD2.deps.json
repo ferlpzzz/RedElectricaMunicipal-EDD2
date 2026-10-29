@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "RedElectricaMunicipal-EDD2/1.0.0": {
+        "runtime": {
+          "RedElectricaMunicipal-EDD2.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "RedElectricaMunicipal-EDD2/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

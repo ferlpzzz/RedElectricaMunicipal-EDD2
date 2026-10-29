@@ -3,11 +3,11 @@ using System;
 namespace RedElectricaMunicipal
 {
     // =========================================================================
-    // ESTRUCTURA: Conjunto Disjunto (Union-Find)
-    // AUTOR / RESPONSABLE: Ferry de Jesús López del Cid
-    // JUSTIFICACIÓN TÉCNICA: Permite verificar en tiempo casi constante O(α(n))
-    // si dos subestaciones pertenecen a la misma zona eléctrica conectada antes
-    // de habilitar una nueva línea o ejecutar el algoritmo de Dijkstra.
+    //ESTRUCTURA: Conjunto Disjunto (Union-Find)
+    //RESPONSABLE: Ferry de Jesús López del Cid
+    //JUSTIFICACIÓN TÉCNICA: Permite verificar en tiempo casi constante O(α(n))
+    //si dos subestaciones pertenecen a la misma zona eléctrica conectada antes
+    //de habilitar una nueva línea o ejecutar el algoritmo de Dijkstra.
     // =========================================================================
     public class UnionFind
     {

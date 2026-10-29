@@ -2,6 +2,12 @@
 
 namespace RedElectricaMunicipal
 {
+    // =========================================================================
+    //ESTRUCTURA: Árbol de Prefijos (Trie) con Arreglo Puro ASCII (256)
+    //RESPONSABLE: José Sulecio
+    //JUSTIFICACIÓN TÉCNICA: Permite autocompletar nombres de subestaciones
+    //y recuperar sus códigos asociados en tiempo O(L), sin colecciones nativas.
+    // =========================================================================
 
     public class NodoTrie
     {

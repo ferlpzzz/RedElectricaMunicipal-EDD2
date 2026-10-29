@@ -4,7 +4,7 @@ namespace RedElectricaMunicipal
 {
     // =========================================================================
     //ESTRUCTURA: Tabla Hash con Encadenamiento Separado (Listas Enlazadas)
-    //AUTOR / RESPONSABLE: José Sulecio
+    //RESPONSABLE: José Sulecio
     //JUSTIFICACIÓN TÉCNICA: Permite localizar el registro completo de una
     //subestación a partir de su código único en tiempo constante promedio O(1),
     //resolviendo colisiones mediante nodos enlazados propios.
