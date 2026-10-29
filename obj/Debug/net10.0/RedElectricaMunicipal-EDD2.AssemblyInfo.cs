@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RedElectricaMunicipal-EDD2")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c32562a62ebfc74dbf92ba7acb7494a46b1f8c1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc75c2607aaee23c0d23210de18bac4d6a6856e3")]
 [assembly: System.Reflection.AssemblyProductAttribute("RedElectricaMunicipal-EDD2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RedElectricaMunicipal-EDD2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

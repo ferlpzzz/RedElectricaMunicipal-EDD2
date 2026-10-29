@@ -301,7 +301,7 @@ namespace RedElectricaMunicipal
             }
 
             int idRaiz = unionFind.Find(subOrigen.IdInterno);
-            Console.WriteLine("[Union-Find O(α(n))] Conectividad confirmada. Ambas pertenecen a la zona principal liderada por [" + grafo.Vertices[idRaiz].Codigo + "].");
+            Console.WriteLine("Conectividad confirmada. Ambas pertenecen a la zona principal liderada por [" + grafo.Vertices[idRaiz].Codigo + "].");
 
             // PASO 4: CÁLCULO DE RUTA DE MENOR COSTO CON DIJKSTRA EN EL GRAFO
             Console.WriteLine("\n--- 4. CALCULO DE RUTA DE MENOR COSTO ---");
