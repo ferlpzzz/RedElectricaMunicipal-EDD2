@@ -167,7 +167,7 @@ namespace RedElectricaMunicipal
             visitado[idInicio] = true;
             cola.Enqueue(idInicio);
 
-            Console.WriteLine("\n=== RECORRIDO EN ANCHURA (BFS) DESDE [" + vertices[idInicio].Codigo + "] ===");
+            Console.WriteLine("\n=== RECORRIDO EN ANCHURA DESDE [" + vertices[idInicio].Codigo + "] ===");
             int paso = 1;
 
             while (cola.Count > 0)
@@ -200,7 +200,7 @@ namespace RedElectricaMunicipal
             }
 
             bool[] visitado = new bool[totalSubestaciones];
-            Console.WriteLine("\n=== RECORRIDO EN PROFUNDIDAD (DFS) DESDE [" + vertices[idInicio].Codigo + "] ===");
+            Console.WriteLine("\n=== RECORRIDO EN PROFUNDIDAD DESDE [" + vertices[idInicio].Codigo + "] ===");
             int contador = 1;
             DFSRecursivo(idInicio, visitado, ref contador);
         }
@@ -283,7 +283,7 @@ namespace RedElectricaMunicipal
                 }
             }
 
-            Console.WriteLine("\n=== RUTA ÓPTIMA DE RESTABLECIMIENTO (DIJKSTRA) ===");
+            Console.WriteLine("\n=== RUTA ÓPTIMA DE RESTABLECIMIENTO ===");
             if (costoMinimo[idDestino] == double.MaxValue)
             {
                 Console.WriteLine("No existe una ruta dirigida disponible desde [" +
@@ -322,7 +322,7 @@ namespace RedElectricaMunicipal
         // 7. Imprimir Topología de la Red
         public void ImprimirGrafo()
         {
-            Console.WriteLine("\n=== TOPOLOGÍA DE LA RED ELÉCTRICA (LISTA DE ADYACENCIA) ===");
+            Console.WriteLine("\n=== TOPOLOGÍA DE LA RED ELÉCTRICA ===");
             if (totalSubestaciones == 0)
             {
                 Console.WriteLine("No hay subestaciones registradas.");

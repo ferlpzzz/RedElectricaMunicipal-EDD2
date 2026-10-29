@@ -90,7 +90,7 @@ namespace RedElectricaMunicipal
 
         public void ImprimirZonas(Subestacion[] catalogo, int totalSubestaciones)
         {
-            Console.WriteLine("\n=== ESTADO DE ZONAS ELÉCTRICAS (UNION-FIND) ===");
+            Console.WriteLine("\n=== ESTADO DE ZONAS ELÉCTRICAS ===");
             Console.WriteLine("Zonas eléctricas independientes activas: " + cantidadZonas);
             Console.WriteLine("------------------------------------------------");
 
